@@ -1,1 +1,8 @@
 src/__pycache__/*
+
+
+# Data/Models/Outputs
+models/
+outputs/
+*.csv
+*.xlsx
