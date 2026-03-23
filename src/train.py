@@ -35,10 +35,11 @@ os.makedirs(PLOTS_DIR, exist_ok=True)
 
 def get_models(random_state=42):
     models = [
-        ('Linear Regression', LinearRegression()),
-        ('Random Forest', RandomForestRegressor(random_state=random_state)),
-        ('Gradient Boosting', GradientBoostingRegressor(random_state=random_state))
-    ]
+            ('Linear Regression', LinearRegression()),
+            ('Random Forest', RandomForestRegressor(n_estimators=10, random_state=random_state)),
+            ('Gradient Boosting', GradientBoostingRegressor(n_estimators=10, random_state=random_state))
+        ]
+    # ..
     if xgb_installed:
         models.append(('XGBoost', XGBRegressor(random_state=random_state, verbosity=0)))
     if catboost_installed:
@@ -101,7 +102,7 @@ def main():
     comparison_df = pd.DataFrame(results)
     comparison_df.to_csv(COMPARISON_CSV, index=False)
     print(f"\nModel comparison table saved to {COMPARISON_CSV}")
-    # Save best model pipeline
+    # Save best model pipeline using joblib
     if best_pipeline is not None:
         joblib.dump(best_pipeline, BEST_MODEL_PATH)
         print(f"\nBest model pipeline ({best_model_name}) saved to {BEST_MODEL_PATH}")
