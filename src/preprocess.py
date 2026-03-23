@@ -49,7 +49,7 @@ def build_preprocessor(num_features, cat_features, scale_numeric=True):
 
     cat_pipeline = Pipeline([
         ('imputer', SimpleImputer(strategy='most_frequent')),
-        ('encoder', OneHotEncoder(handle_unknown='ignore', sparse=False))
+        ('encoder', OneHotEncoder(handle_unknown='ignore', sparse_output=False))
     ])
 
     preprocessor = ColumnTransformer([
@@ -75,9 +75,8 @@ def prepare_train_test_data(df, target_col=None, test_size=0.2, random_state=42,
         X, y, test_size=test_size, random_state=random_state
     )
     preprocessor = build_preprocessor(num_features, cat_features, scale_numeric=scale_numeric)
-    X_train_prep = preprocessor.fit_transform(X_train)
-    X_test_prep = preprocessor.transform(X_test)
-    return X_train_prep, X_test_prep, y_train, y_test, preprocessor
+    # Return DataFrames, not preprocessed arrays. The pipeline will handle preprocessing.
+    return X_train, X_test, y_train, y_test, preprocessor
 
 # Example usage (from train.py):
 # from src.preprocess import load_dataset, prepare_train_test_data
